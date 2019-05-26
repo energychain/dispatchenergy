@@ -94,7 +94,7 @@ const main = async function() {
         }
       } // end for producers
       let costfactor = 0;
-
+      let total_energy = 0;
       for(let i=0;i<market.dispatches.length;i++) {
         market.dispatches[i].generator = market.producers[market.dispatches[i].generator];
         delete market.dispatches[i].generator.energy;
@@ -107,10 +107,12 @@ const main = async function() {
 
         market.dispatches[i].distance = getDistanceFromLatLonInKm(market.dispatches[i].consumer.lat,market.dispatches[i].consumer.lng,market.dispatches[i].generator.lat,market.dispatches[i].generator.lng);
         market.dispatches[i].costfactor = market.dispatches[i].distance / market.dispatches[i].energy;
-        costfactor+=market.dispatches[i].costfactor
+        costfactor+=market.dispatches[i].costfactor;
+        total_energy+=market.dispatches[i].energy;
       }
       market.costfactor = costfactor/market.dispatches.length;
       market.updated = new Date().getTime();
+      market.energy=total_energy;
       resolve(market);
     });
   });
