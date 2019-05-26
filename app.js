@@ -113,7 +113,20 @@ const main = async function() {
       market.costfactor = costfactor/market.dispatches.length;
       market.updated = new Date().getTime();
       market.energy=total_energy;
-      resolve(market);
+      var docClient = new AWS.DynamoDB.DocumentClient();
+      docClient.put({
+        TableName:'corrently-dispatch',
+        Item:{
+          updated:market.updated,
+          costfactor:market.costfactor,
+          energy:market.energy,
+          dispatches:market.dispatches.length,
+          ttl:Math.round(market.updated/1000)+86400
+        }
+      },function(err,data) {
+        resolve(market);  
+      })
+
     });
   });
 }
