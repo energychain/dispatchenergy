@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "dispatchenergy-executor",
+    "name": "dispatchenergy",
+    "region": "eu-central-1"
+  },
+  "api": {
+    "id": "ob8atf258a",
+    "module": "app"
+  }
+}

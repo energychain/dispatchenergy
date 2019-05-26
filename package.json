@@ -1,0 +1,33 @@
+{
+  "name": "dispatchenergy",
+  "version": "1.0.0",
+  "description": "Dispatch Energy based on demand side optimized by GrünstromIndex",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energychain/dispatchenergy.git"
+  },
+  "keywords": [
+    "renewables",
+    "stromdao",
+    "blockchain",
+    "energy",
+    "ai",
+    "dispatch"
+  ],
+  "author": "STROMDAO GmbH <kontakt@stromdao.de>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/energychain/dispatchenergy/issues"
+  },
+  "homepage": "https://github.com/energychain/dispatchenergy#readme",
+  "dependencies": {
+    "aws-sdk": "^2.463.0",
+    "claudia": "^5.5.0",
+    "claudia-api-builder": "^4.1.2",
+    "request": "^2.88.0"
+  }
+}
