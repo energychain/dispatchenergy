@@ -163,7 +163,7 @@ const main = async function() {
         market.dispatches[i].costfactor = market.dispatches[i].distance / market.dispatches[i].energy;
         costfactor+=market.dispatches[i].costfactor;
         total_energy+=market.dispatches[i].energy;
-        singleDispatcher(market.dispatches[i]);
+        await singleDispatcher(market.dispatches[i]);
       }
       // Ab hier sind alle Market Dispatches vorhanden und könnten gepatched werden.
 
