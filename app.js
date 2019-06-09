@@ -111,9 +111,12 @@ const main = async function() {
                 item = data.Item;
               }
               if(typeof item.values["to_"+dispatch.consumer.zip] == "undefined") {
-                item.values["to_"+dispatch.consumer.zip] = 0;
+                item.values["to_"+dispatch.consumer.zip] = {
+                  energy:0,
+                  city:dispatch.consumer.city
+                }
               }
-              item.values["to_"+dispatch.consumer.zip] += 1* dispatch.energy;
+              item.values["to_"+dispatch.consumer.zip].energy += 1* dispatch.energy;
               docClient.put({
                 TableName:'dispatch-from',
                 Item:item
@@ -129,9 +132,12 @@ const main = async function() {
                     item = data.Item;
                   }
                   if(typeof item.values["from_"+dispatch.generator.zip] == "undefined") {
-                    item.values["from_"+dispatch.generator.zip] = 0;
+                    item.values["from_"+dispatch.generator.zip] = {
+                      energy:0,
+                      city:dispatch.generator.city
+                    }
                   }
-                  item.values["from_"+dispatch.generator.zip] += 1* dispatch.energy;
+                  item.values["from_"+dispatch.generator.zip].energy += 1* dispatch.energy;
                   docClient.put({
                     TableName:'dispatch-to',
                     Item:item
