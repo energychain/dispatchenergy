@@ -95,6 +95,52 @@ const main = async function() {
       } // end for producers
       let costfactor = 0;
       let total_energy = 0;
+
+      const singleDispatcher = async function(dispatch) {
+          return new Promise(async function (resolve3, reject3)  {
+            var docClient = new AWS.DynamoDB.DocumentClient();
+            docClient.get({
+              TableName:'disptach-from',
+              Key:{zip:dispatch.generator.zip}
+            },function(err,data) {
+              let item = {};
+              item.zip = dispatch.generator.zip
+              item.values={};
+              if(data.Item != null) {
+                item = data.Item;
+              }
+              if(typeof item.values["to_"+consumer.zip] == "undefined") {
+                item.values["to_"+consumer.zip] = 0;
+              }
+              item.values["to_"+consumer.zip] += 1* dispatch.energy;
+              docClient.put({
+                TableName:'disptach-from',
+                Item:item
+              },function(err,data) {
+                docClient.get({
+                  TableName:'disptach-to',
+                  Key:{zip:dispatch.consumer.zip}
+                },function(err,data) {
+                  item = {};
+                  item.zip = dispatch.consumer.zip
+                  item.values={};
+                  if(data.Item != null) {
+                    item = data.Item;
+                  }
+                  if(typeof item.values["from_"+generator.zip] == "undefined") {
+                    item.values["from_"+generator.zip] = 0;
+                  }
+                  item.values["from_"+generator.zip] += 1* dispatch.energy;
+                  docClient.put({
+                    TableName:'disptach-from',
+                    Item:item
+                  },function(err,data) {
+                      resolve3();
+                  });
+              })
+            })
+          });
+      }
       for(let i=0;i<market.dispatches.length;i++) {
         market.dispatches[i].generator = market.producers[market.dispatches[i].generator];
         delete market.dispatches[i].generator.energy;
@@ -109,7 +155,10 @@ const main = async function() {
         market.dispatches[i].costfactor = market.dispatches[i].distance / market.dispatches[i].energy;
         costfactor+=market.dispatches[i].costfactor;
         total_energy+=market.dispatches[i].energy;
+        await singleDispatcher(market.dispatches[i]);
       }
+      // Ab hier sind alle Market Dispatches vorhanden und könnten gepatched werden.
+
       market.costfactor = costfactor/market.dispatches.length;
       market.updated = new Date().getTime();
       market.energy=total_energy;
@@ -124,7 +173,7 @@ const main = async function() {
           ttl:Math.round(market.updated/1000)+86400
         }
       },function(err,data) {
-        resolve(market);  
+        resolve(market);
       })
 
     });
