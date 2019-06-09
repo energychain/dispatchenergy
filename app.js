@@ -100,7 +100,7 @@ const main = async function() {
           return new Promise(async function (resolve3, reject3)  {
             var docClient = new AWS.DynamoDB.DocumentClient();
             docClient.get({
-              TableName:'disptach-from',
+              TableName:'dispatch-from',
               Key:{zip:dispatch.generator.zip}
             },function(err,data) {
               if(err) console.log(err);
@@ -115,11 +115,11 @@ const main = async function() {
               }
               item.values["to_"+consumer.zip] += 1* dispatch.energy;
               docClient.put({
-                TableName:'disptach-from',
+                TableName:'dispatch-from',
                 Item:item
               },function(err,data) {
                 docClient.get({
-                  TableName:'disptach-to',
+                  TableName:'dispatch-to',
                   Key:{zip:dispatch.consumer.zip}
                 },function(err,data) {
                   item = {};
@@ -133,7 +133,7 @@ const main = async function() {
                   }
                   item.values["from_"+generator.zip] += 1* dispatch.energy;
                   docClient.put({
-                    TableName:'disptach-from',
+                    TableName:'dispatch-from',
                     Item:item
                   },function(err,data) {
                       resolve3();
