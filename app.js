@@ -140,6 +140,7 @@ const main = async function() {
               })
             })
           });
+        });
       }
       for(let i=0;i<market.dispatches.length;i++) {
         market.dispatches[i].generator = market.producers[market.dispatches[i].generator];
