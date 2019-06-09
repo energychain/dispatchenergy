@@ -133,7 +133,7 @@ const main = async function() {
                   }
                   item.values["from_"+generator.zip] += 1* dispatch.energy;
                   docClient.put({
-                    TableName:'dispatch-from',
+                    TableName:'dispatch-to',
                     Item:item
                   },function(err,data) {
                       resolve3();
