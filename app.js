@@ -103,10 +103,11 @@ const main = async function() {
               TableName:'disptach-from',
               Key:{zip:dispatch.generator.zip}
             },function(err,data) {
+              if(err) console.log(err);
               let item = {};
               item.zip = dispatch.generator.zip
               item.values={};
-              if(data.Item != null) {
+              if((data != null)||(data.Item != null)) {
                 item = data.Item;
               }
               if(typeof item.values["to_"+consumer.zip] == "undefined") {
@@ -124,7 +125,7 @@ const main = async function() {
                   item = {};
                   item.zip = dispatch.consumer.zip
                   item.values={};
-                  if(data.Item != null) {
+                  if((data != null)||(data.Item != null)) {
                     item = data.Item;
                   }
                   if(typeof item.values["from_"+generator.zip] == "undefined") {
