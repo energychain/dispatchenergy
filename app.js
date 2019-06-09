@@ -28,7 +28,7 @@ const deg2rad = function(deg) {
   return deg * (Math.PI/180)
 }
 
-const main = async function() {
+const main = async function(request) {
   return new Promise(async function (resolve, reject)  {
     http_request("https://api.corrently.io/core/dispatch",async function(e,r,b) {
       let market = JSON.parse(b);
@@ -163,7 +163,11 @@ const main = async function() {
         market.dispatches[i].costfactor = market.dispatches[i].distance / market.dispatches[i].energy;
         costfactor+=market.dispatches[i].costfactor;
         total_energy+=market.dispatches[i].energy;
-        await singleDispatcher(market.dispatches[i]);
+        if(i<50) {
+          if(typeof request.queryString.dosingle != "undefined") {
+              await singleDispatcher(market.dispatches[i]);
+          }
+        }
       }
       // Ab hier sind alle Market Dispatches vorhanden und könnten gepatched werden.
 
