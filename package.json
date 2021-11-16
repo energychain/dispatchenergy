@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/energychain/dispatchenergy#readme",
   "dependencies": {
-    "aws-sdk": "^2.463.0",
+    "aws-sdk": "^2.814.0",
     "claudia": "^5.5.0",
     "claudia-api-builder": "^4.1.2",
     "request": "^2.88.0"
